@@ -1,9 +1,9 @@
 {
   "name": "@empo/encryption",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "description": "Encryption for Empo Developers",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && node_modules/.bin/tsc"
   },
@@ -12,9 +12,12 @@
   ],
   "author": "Empo Developers <dev@empoapp.com>",
   "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.26.0"
+  },
   "devDependencies": {
     "@types/node": "^13.7.1",
-    "argon2": "^0.26.0",
+    "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   }
 }

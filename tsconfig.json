@@ -3,8 +3,39 @@
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
+    "esModuleInterop": true,
     "outDir": "dist",
     "strict": true,
-    "typeRoots": ["./node_modules/@types", "./dist/**/*.ts"]
+    "typeRoots": []
+    // "typeRoots": ["./node_modules/@types", "./dist/**/*.ts"]
   }
 }
+
+// {
+//   "compilerOptions": {
+//     "module": "commonjs",
+//     "esModuleInterop": true,
+//     "target": "es6",
+//     "noImplicitAny": false,
+//     "allowSyntheticDefaultImports": true,
+//     "suppressImplicitAnyIndexErrors": true,
+//     "moduleResolution": "node",
+//     "sourceMap": true,
+//     "outDir": "dist",
+//     "baseUrl": ".",
+//     "skipLibCheck": true,
+//     "allowJs": true,
+//     "paths": {
+//       "*": [
+//         "node_modules/@types*",
+//         "src/types/*"
+//       ]
+//     }
+//   },
+//   "include": [
+//     "src/**/*"
+//   ],
+//   "exclude": [
+//     "dist/**/*"
+//   ]
+// }
