@@ -1,5 +1,9 @@
-tsconfig.json
-
 src
 
+tsconfig.json
+
 package-lock.json
+
+tslint.json
+
+.prettierrc
