@@ -5,7 +5,10 @@ let aes: AES
 let encrypted: string
 
 beforeAll(() => {
-  const pepper = generateRandomBytes({ type: 'salt', encoding: 'base64' }) as string
+  const pepper = generateRandomBytes({
+    type: 'salt',
+    encoding: 'base64'
+  }) as string
   aes = new AES(pepper)
 })
 
