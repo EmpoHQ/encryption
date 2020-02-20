@@ -4,6 +4,7 @@
   "description": "Encryption for Empo Developers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "homepage": "https://www.empoapp.com",
   "scripts": {
     "build": "rm -rf dist && node_modules/.bin/tsc",
     "test": "node_modules/.bin/jest",
