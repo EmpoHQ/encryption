@@ -11,7 +11,9 @@ interface RandomByteOptions {
 /**
  * @param {object} options option of function
  */
-export const generateRandomBytes = (options: RandomByteOptions): Buffer | string => {
+export const generateRandomBytes = (
+  options: RandomByteOptions
+): Buffer | string => {
   const { type, encoding } = options
   if (!type) throw new Error('type not defined.')
 
@@ -54,7 +56,10 @@ export class AES {
     const algorithm = 'aes-256-gcm'
     const iv = generateRandomBytes({ type: 'iv' }) as Buffer
     const cipher = crypto.createCipheriv(algorithm, this._salt, iv)
-    const encrypted = Buffer.concat([cipher.update(`${text}`, 'utf8'), cipher.final()])
+    const encrypted = Buffer.concat([
+      cipher.update(`${text}`, 'utf8'),
+      cipher.final()
+    ])
     const tag = cipher.getAuthTag()
 
     return Buffer.concat([iv, tag, encrypted]).toString('base64')
@@ -78,7 +83,8 @@ export class AES {
     decipher.setAuthTag(tag)
 
     // encrypt the given text
-    const decrypted = decipher.update(text, 'binary', 'utf8') + decipher.final('utf8')
+    const decrypted =
+      decipher.update(text, 'binary', 'utf8') + decipher.final('utf8')
 
     return decrypted
   }
@@ -139,15 +145,10 @@ export class Argon2 {
    * @param {string} hash argonEncrypt()로 반환된 hash
    * @param {string} text 비교할 원본 텍스트
    */
-  match = async (hash: string, text: string): Promise<boolean> => {
-    try {
-      const value = text + this._salt
-      const pre_raw = this.SHA.encrypt(value)
+  match = (hash: string, text: string): Promise<boolean> => {
+    const value = text + this._salt
+    const pre_raw = this.SHA.encrypt(value)
 
-      const matched = await argon2.verify(hash, pre_raw)
-      return Promise.resolve(matched)
-    } catch (err) {
-      return Promise.resolve(false)
-    }
+    return argon2.verify(hash, pre_raw)
   }
 }
