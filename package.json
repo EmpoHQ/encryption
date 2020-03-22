@@ -16,7 +16,7 @@
   "author": "Empo Developers <dev@empoapp.com>",
   "license": "ISC",
   "dependencies": {
-    "argon2": "^0.26.0"
+    "argon2": "^0.26.1"
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",
