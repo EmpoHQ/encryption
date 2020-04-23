@@ -91,22 +91,17 @@ export class AES {
 }
 
 export class SHA {
-  private _pepper: string
-
-  constructor(pepper: string) {
-    this._pepper = pepper
-  }
 
   /**
-   * @description plain text를 sha256(base64)로 변환합니다.
+   * @description plain text를 sha3-256(base64)로 변환합니다.
    * @param {string} text
    */
   encrypt = (text: string): string => {
     const encoding = 'base64'
-    const algorithm = 'sha256'
+    const algorithm = 'sha3-256'
 
     return crypto
-      .createHmac(algorithm, this._pepper)
+      .createHmac(algorithm)
       .update(text)
       .digest(encoding)
   }
@@ -122,7 +117,7 @@ export class Argon2 {
     this._pepper = pepper
     this._salt = salt
 
-    this.SHA = new SHA(pepper)
+    this.SHA = new SHA()
   }
 
   /**
