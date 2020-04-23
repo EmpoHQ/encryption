@@ -99,11 +99,6 @@ export class AES {
 }
 
 export class SHA {
-  private _pepper: string
-
-  constructor(pepper: string) {
-    this._pepper = pepper
-  }
 
   /**
    * @description A secure hash function using HMAC-SHA256
@@ -111,16 +106,16 @@ export class SHA {
    */
   encrypt = (text: string): string => {
     const encoding = 'base64'
-    const algorithm = 'sha256'
+    const algorithm = 'sha3-256'
 
     // returns Base64 encoded value
     return crypto
-      .createHmac(algorithm, this._pepper)
+      .createHmac(algorithm)
       .update(text)
       .digest(encoding)
   }
 }
-
+g
 export class Argon2 {
   readonly _pepper: string
   readonly _salt: string
@@ -131,7 +126,7 @@ export class Argon2 {
     this._pepper = pepper
     this._salt = salt
 
-    this.SHA = new SHA(pepper)
+    this.SHA = new SHA()
   }
 
   /**
