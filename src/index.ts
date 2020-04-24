@@ -98,10 +98,10 @@ export class SHA {
    */
   encrypt = (text: string): string => {
     const encoding = 'base64'
-    const algorithm = 'sha3-256'
+    const algorithm = 'shake256'
 
     return crypto
-      .createHmac(algorithm)
+      .createHash(algorithm)
       .update(text)
       .digest(encoding)
   }
