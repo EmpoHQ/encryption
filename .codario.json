@@ -1,5 +1,8 @@
 {
   "integrations": {
+    "collaboration_tool": {
+      "credential": "empo-slack"
+    },
     "git_provider": {
       "credential": "empo-github",
       "target": "master"
@@ -22,6 +25,13 @@
           "message": "[snippet:workflow.event.new-updates-available]",
           "cc": "",
           "bcc": ""
+        }
+      },
+      {
+        "sendmessage": {
+          "title": "New updates available for \"[project:name]\"",
+          "message": "We've found the new updates for your project.\n\nThe packages:\n[task:packages|, ][package:name]: [package:current-version] → [package:new-version][/task:packages]",
+          "color": "#998877"
         }
       }
     ],
@@ -58,6 +68,13 @@
           "message": "[snippet:workflow.event.failed]",
           "cc": "",
           "bcc": ""
+        }
+      },
+      {
+        "sendmessage": {
+          "title": "A task error occurred in \"[project:name]\"",
+          "message": "We've found a task error in your project.\n\nThe packages:\n[task:packages|, ][package:name]: [package:current-version] → [package:new-version][/task:packages]",
+          "color": "#998877"
         }
       }
     ]
