@@ -19,15 +19,6 @@
     "events": {
         "new_updates_available": [
             {
-                "sendmail": {
-                    "emails": "[workspace:members|,|admins+users][member:email][/workspace:members]",
-                    "subject": "New updates are available for [project:name]",
-                    "message": "[snippet:workflow.event.new-updates-available]",
-                    "cc": "",
-                    "bcc": ""
-                }
-            },
-            {
                 "sendmessage": {
                     "title": "New updates available for \"[project:name]\"",
                     "message": "We've found the new updates for your project.\n\nThe packages:\n[task:packages|, ][package:name]: [package:current-version] → [package:new-version][/task:packages]",
