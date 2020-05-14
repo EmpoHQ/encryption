@@ -13,7 +13,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@master
       with:
-        node-version: 10.0.0
+        node-version: 12
     - name: Publish if version has been updated
       uses: pascalgn/npm-publish-action@4f4bf159e299f65d21cd1cbd96fc5d53228036df
       with: # All of theses inputs are optional
@@ -23,3 +23,17 @@ jobs:
       env: # More info about the environment variables in the README
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
+    - name: Action Succeed
+      if: success()
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_DEV_NOTIFICATIONS }}
+      uses: Ilshidur/action-slack@master
+      with:
+        args: 'npm publish for encryption module succeeded.'
+    - name: Action Failed
+      if: failure()
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_ERROR_REPORTS }}
+      uses: Ilshidur/action-slack@master
+      with:
+        args: 'npm publish for encryption module failed.'
