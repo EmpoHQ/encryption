@@ -1,26 +1,47 @@
 {
   "name": "@empo/encryption",
   "version": "0.2.0",
-  "description": "Encryption for Empo Developers",
+  "description": "A JavaScript library for widely used crypto standards",
+  "homepage": "https://www.empoapp.com",
+  "author": "Empo Developers <dev@empoapp.com> (https://github.com/empo-dev)",
+  "contributors": [
+    "Donghyun Kim <peterkimzz69@gmail.com> (https://github.com/peterkimzz)",
+    "Handong Choi <wschd770@gmail.com> (https://github.com/henrychoi7)"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/empo-dev/encryption.git"
+  },
+  "bugs": {
+    "url": "https://github.com/empo-dev/encryption/issues"
+  },
+  "keywords": [
+    "empo",
+    "security",
+    "crypto",
+    "hash",
+    "AES",
+    "Argon2",
+    "SHA",
+    "CSPRNG",
+    "Base64",
+    "HMAC"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://www.empoapp.com",
   "scripts": {
     "build": "rm -rf dist && node_modules/.bin/tsc",
     "test": "node_modules/.bin/jest",
     "deploy": "npm test && npm publish"
   },
-  "keywords": [
-    "empo"
-  ],
-  "author": "Empo Developers <dev@empoapp.com>",
-  "license": "ISC",
   "dependencies": {
     "argon2": "^0.26.1"
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",
     "@types/node": "^13.7.1",
+    "coveralls": "^3.1.0",
     "jest": "^26.0.0",
     "ts-jest": "^25.2.1",
     "ts-node": "^8.6.2",
