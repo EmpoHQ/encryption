@@ -30,7 +30,7 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
-          coverageCommand: jest --coverage
+          coverageCommand: npm test -- --coverage
           debug: true
           
   single-location:
@@ -51,6 +51,6 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
-          coverageCommand: jest --coverage
+          coverageCommand: npm test -- --coverage
           coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
           debug: true
