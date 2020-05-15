@@ -24,8 +24,6 @@ jobs:
 
     - name: npm install
       run: npm install
-    - name: Yarn Install
-      run: yarn install
       
     - name: Compile TypeScript
       uses: icrawl/action-tsc@v1
