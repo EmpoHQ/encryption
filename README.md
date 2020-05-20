@@ -1,4 +1,4 @@
-![NPM version](https://img.shields.io/npm/v/@empo/encryption) ![Build using GitHub Actions](https://github.com/EMPO-dev/encryption/workflows/build/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/EMPO-dev/encryption/badge.svg?branch=master)](https://coveralls.io/github/EMPO-dev/encryption?branch=master) [![Maintainability by Code Climate](https://api.codeclimate.com/v1/badges/ef685501f7197ae93934/maintainability)](https://codeclimate.com/repos/5eb26921d748fc018c00f07c/maintainability) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/@empo/encryption) [![Known Vulnerabilities by Snyk](https://snyk.io/test/npm/@empo/encryption/badge.svg)](https://snyk.io/test/npm/@empo/encryption)
+![NPM version](https://img.shields.io/npm/v/@empo/encryption) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/empo-dev/encryption/build) [![Coverage Status](https://coveralls.io/repos/github/EMPO-dev/encryption/badge.svg?branch=master)](https://coveralls.io/github/EMPO-dev/encryption?branch=master) ![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/EMPO-dev/encryption) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/@empo/encryption) ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@empo/encryption)
 
 A JavaScript library for widely used crypto standards.
 
@@ -13,16 +13,16 @@ A JavaScript library for widely used crypto standards.
 
 - [Installation](#Installation)
 
-### Ciphers
+#### Ciphers
 
 - [AES](#AES)
 
-### Message Digests
+#### Message Digests
 
 - [SHA](#SHA)
 - [Argon2](#Argon2)
 
-### Utilities
+#### Utilities
 - [CSPRNG](#CSPRNG)
 
 ## Installation
@@ -73,11 +73,11 @@ const encrypted = sha.encrypt(text)
 
 This provides a key derivation function using **Argon2i** algorithm. Argon2 has several variants with different aims:
 
-- Argon2d: It maximizes resistance to GPU cracking attacks, which is useful for cryptocurrency.
+- **Argon2d**: It maximizes resistance to GPU cracking attacks, which is useful for cryptocurrency.
 
-- Argon2i: It is optimized to resist tradeoff attacks and side-channel attacks, which is useful for password hashing and key derivation.
+- **Argon2i**: It is optimized to resist tradeoff attacks and side-channel attacks, which is useful for password hashing and key derivation.
 
-- Argon2id: A hybrid function of the above, it follows both approaches.
+- **Argon2id**: A hybrid function of the above, it follows both approaches.
 
 A key derivation function is a cryptographic hash function that derives one or more secret keys such as a password, or a passphrase using pseudorandom function — meaning that for a given input value it must always generate different hash value.
 

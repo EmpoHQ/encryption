@@ -131,7 +131,7 @@ export class Argon2 {
    */
   encrypt = (text: string): Promise<string> => {
     if (!this._salt) {
-      throw new Error('salt not defiend.')
+      throw new Error('salt is not defined.')
     }
 
     const value = text + this._salt
