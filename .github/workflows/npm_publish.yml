@@ -26,7 +26,7 @@ jobs:
     - name: Action Succeed
       if: success()
       env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_DEV_NOTIFICATIONS }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_SEC_NOTIFICATIONS }}
       uses: Ilshidur/action-slack@master
       with:
         args: 'npm publish for encryption module succeeded.'
