@@ -8,32 +8,26 @@ jobs:
     name: npm-publish
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@master
-    - name: Set up Node.js
-      uses: actions/setup-node@master
-      with:
-        node-version: 12
-    - name: Publish if version has been updated
-      uses: pascalgn/npm-publish-action@4f4bf159e299f65d21cd1cbd96fc5d53228036df
-      with: # All of theses inputs are optional
-        tag_name: "v%s"
-        tag_message: "v%s"
-        commit_pattern: "^Release (\\S+)"
-      env: # More info about the environment variables in the README
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
-    - name: Action Succeed
-      if: success()
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_SEC_NOTIFICATIONS }}
-      uses: Ilshidur/action-slack@master
-      with:
-        args: 'npm publish for encryption module succeeded.'
-    - name: Action Failed
-      if: failure()
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_ERROR_REPORTS }}
-      uses: Ilshidur/action-slack@master
-      with:
-        args: 'npm publish for encryption module failed.'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - run: npm test
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Action Succeed
+        if: success()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_SEC_NOTIFICATIONS }}
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'npm publish for encryption module succeeded.'
+      - name: Action Failed
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_ERROR_REPORTS }}
+        uses: Ilshidur/action-slack@master
+        with:
+          args: 'npm publish for encryption module failed.'
