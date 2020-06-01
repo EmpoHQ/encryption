@@ -12,7 +12,7 @@ beforeAll(() => {
 })
 
 describe('Argon2', () => {
-  test('encrpyt()', async () => {
+  test('encrypt()', async () => {
     argon2_encrypted = await argon2.encrypt(text)
     expect(argon2_encrypted).toMatch(/^\$argon2*/)
   })
