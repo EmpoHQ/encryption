@@ -13,7 +13,7 @@ beforeAll(() => {
 })
 
 describe('SHA', () => {
-  test('encrpyt()', () => {
+  test('encrypt()', () => {
     encrypted = aes.encrypt(text)
     expect(encrypted.length).toBe(56)
   })

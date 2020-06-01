@@ -9,9 +9,9 @@ beforeAll(() => {
 })
 
 describe('SHA', () => {
-  test('encrpyt()', () => {
-    const encrpyted = sha.encrypt(text)
-    expect(encrpyted.length).toBe(44)
+  test('encrypt()', () => {
+    const encrypted = sha.encrypt(text)
+    expect(encrypted.length).toBe(44)
   })
 
   test('allow rainbow', () => {
