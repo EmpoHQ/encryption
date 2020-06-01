@@ -1,6 +1,6 @@
 {
   "name": "@empo/encryption",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A JavaScript library for widely used crypto standards",
   "homepage": "https://www.empoapp.com",
   "author": "Empo Developers <dev@empoapp.com> (https://github.com/empo-dev)",
