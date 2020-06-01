@@ -1,7 +1,11 @@
+# Dependencies
 node_modules
 
+# Build
 dist
 
 # Ignore test-related files
 coverage.data
-coverage/
+coverage/clover.xml
+coverage/coverage-final.json
+coverage/lcov-report/
