@@ -6,6 +6,7 @@ A TypeScript library for widely used crypto standards.
 
 - Generate a random key for IV (24-byte long) or salt (32-byte long) using [CSPRNG](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) (Cryptographically-secure PRNG)
 - HMAC-SHA256 encryption
+- SHAKE256 (SHA-3) encryption
 - AES256-GCM encryption and decryption
 - Argon2i key derivation and hash verification
 
