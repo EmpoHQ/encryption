@@ -149,11 +149,7 @@ export class Argon2 {
     this._pepper = pepper;
     this._salt = salt;
 
-<<<<<<< HEAD
     this.SHA = new SHA(pepper);
-=======
-    this.SHA = new SHA()
->>>>>>> e44bfa1e119e03393c6404ea2cfbe833a9927c31
   }
 
   /**
