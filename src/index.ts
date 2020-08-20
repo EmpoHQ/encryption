@@ -99,34 +99,57 @@ export class AES {
 }
 
 export class SHA {
+  private _pepper: string;
+
+  constructor(pepper: string) {
+    this._pepper = pepper;
+  }
 
   /**
    * @description A secure hash function using HMAC-SHA256
    * @param {string} text Plaintext
    */
   encrypt = (text: string): string => {
-    const encoding = 'base64'
-    const algorithm = 'sha3-256'
+    const encoding = "base64";
+    const algorithm = "sha256";
 
     // returns Base64 encoded value
     return crypto
-      .createHmac(algorithm)
+      .createHmac(algorithm, this._pepper)
       .update(text)
-      .digest(encoding)
-  }
+      .digest(encoding);
+  };
 }
-g
-export class Argon2 {
-  readonly _pepper: string
-  readonly _salt: string
 
-  private readonly SHA: SHA
+export class SHAKE256 {
+
+  /**
+   * @description A secure hash function using SHAKE256 (SHA-3)
+   * @param {string} text Plaintext
+   */
+  encrypt = (text: string): string => {
+    const encoding = "base64";
+    const algorithm = "shake256";
+
+    // returns Base64 encoded value
+    return crypto
+      .createHash(algorithm)
+      .update(text)
+      .digest(encoding);
+  };
+}
+
+export class Argon2 {
+  readonly _pepper: string;
+  readonly _salt: string;
+
+  private readonly SHA: SHA;
 
   constructor(pepper: string, salt: string) {
-    this._pepper = pepper
-    this._salt = salt
+    this._pepper = pepper;
+    this._salt = salt;
 
-    this.SHA = new SHA()
+    this.SHA = new SHA(pepper);
   }
 
   /**
@@ -135,15 +158,15 @@ export class Argon2 {
    */
   encrypt = (text: string): Promise<string> => {
     if (!this._salt) {
-      throw new Error('salt is not defined.')
+      throw new Error("salt is not defined.");
     }
 
-    const value = text + this._salt
-    const pre_hash = this.SHA.encrypt(value)
+    const value = text + this._salt;
+    const pre_hash = this.SHA.encrypt(value);
 
     // outputs hashed value
-    return argon2.hash(pre_hash)
-  }
+    return argon2.hash(pre_hash);
+  };
 
   /**
    * @description A verification function with input text and Argon2 hashed value
@@ -151,10 +174,10 @@ export class Argon2 {
    * @param {string} text Plaintext for verification
    */
   match = (hash: string, text: string): Promise<boolean> => {
-    const value = text + this._salt
-    const pre_raw = this.SHA.encrypt(value)
+    const value = text + this._salt;
+    const pre_raw = this.SHA.encrypt(value);
 
     // verify hashed value
-    return argon2.verify(hash, pre_raw)
-  }
+    return argon2.verify(hash, pre_raw);
+  };
 }
