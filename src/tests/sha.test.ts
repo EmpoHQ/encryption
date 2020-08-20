@@ -4,7 +4,11 @@ const text = 'password'
 let sha: SHA
 
 beforeAll(() => {
-  sha = new SHA()
+  const pepper = generateRandomBytes({
+    type: "salt",
+    encoding: "base64",
+  }) as string;
+  sha = new SHA(pepper)
 })
 
 describe('SHA', () => {

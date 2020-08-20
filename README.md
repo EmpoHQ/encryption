@@ -86,6 +86,19 @@ const encrypted = sha.encrypt(plaintext)
 // Outputs Base64 encoded value (e.g. IIU+YYIz6XDvNAObEOW+GymC0GiH8fW3SokPbP9P+xg=)
 ```
 
+This provides a generalization of a cryptographic hash function using **SHAKE256**. SHAKE256 is an *extensible-output function* (XOF) in the SHA-3 family, as specified in [FIPS 202](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf). The 256 in its name indicates its maximum security level (in bits), as described in Sections A.1 and A.2 of [FIPS 202](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf). Unlike HMAC with SHA256, SHAKE256 doesn't need a pepper.
+
+```ts
+import { SHAKE256 } from '@empo/encryption'
+
+const plaintext = 'password'
+
+const sha3 = new SHAKE256()
+
+const encrypted = sha3.encrypt(plaintext)
+// Outputs Base64 encoded value (e.g. pe4I+OOr59WS9t538dMpihFJ66aLl/CRyQt3NqG+Y6s=)
+```
+
 This provides a key derivation function using **Argon2** algorithm. A key derivation function is a cryptographic hash function that derives one or more secret keys such as a password, or a passphrase using pseudorandom function — meaning that for a given input value it must always generate different hash value, and the function can't be reversible.
 
 ```ts
