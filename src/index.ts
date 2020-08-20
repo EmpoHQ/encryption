@@ -115,7 +115,7 @@ export class SHA {
 
     // returns Base64 encoded value
     return crypto
-      .createHmac(algorithm, this._pepper)
+      .createHash(algorithm)
       .update(text)
       .digest(encoding);
   };
@@ -149,7 +149,11 @@ export class Argon2 {
     this._pepper = pepper;
     this._salt = salt;
 
+<<<<<<< HEAD
     this.SHA = new SHA(pepper);
+=======
+    this.SHA = new SHA()
+>>>>>>> e44bfa1e119e03393c6404ea2cfbe833a9927c31
   }
 
   /**
