@@ -115,7 +115,7 @@ export class SHA {
 
     // returns Base64 encoded value
     return crypto
-      .createHash(algorithm, this._pepper)
+      .createHmac(algorithm, this._pepper)
       .update(text)
       .digest(encoding)
   }
