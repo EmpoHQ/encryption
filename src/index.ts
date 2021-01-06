@@ -20,9 +20,11 @@ export const generateRandomBytes = (
   const getSize = (type: string): number => {
     // returns a buffer containing raw bytes.
     switch (type) {
+
       // 16 raw bytes for IV (For cryptographic encryptions)
       case 'iv':
         return 16
+
       // 24 raw bytes for Salt (For secure hash functions and users)
       case 'salt':
         return 24
@@ -30,6 +32,7 @@ export const generateRandomBytes = (
         throw new Error('unaccepted type.')
     }
   }
+
   // buffer size
   const size: number = getSize(type)
   const buffer = crypto.randomBytes(size)
@@ -44,57 +47,69 @@ export const generateRandomBytes = (
 }
 
 export class AES {
-  readonly _salt: string
+  readonly secret: string
 
-  constructor(pepper: string) {
-    this._salt = pepper
+  constructor(secret: string) {
+    this.secret = secret
+  }
+  
+  // derived encryption key length: 32 bytes
+  getKey = (salt: Buffer): Buffer => {
+    return crypto.pbkdf2Sync(this.secret, salt, 100000, 32, 'sha512')
   }
 
   /**
    * @description A basic API for block cipher encryption using AES256-GCM.
-   * @param {string} text Plaintext
+   * @param {string} plainText Plaintext
    */
-  encrypt = (text: string): string => {
-
-    // use AES256-GCM
+  encrypt = (plainText: string): string => {
     const algorithm = 'aes-256-gcm'
-    const iv = generateRandomBytes({ type: 'iv' }) as Buffer
-    const cipher = crypto.createCipheriv(algorithm, this._salt, iv)
+    // IV for AES GCM XOR Init
+    const iv = crypto.randomBytes(16)
+
+    // Salt for derivation key
+    const salt = crypto.randomBytes(64)
+    
+    const key = this.getKey(salt)
+    const cipher = crypto.createCipheriv(algorithm, key, iv)
 
     // encrypt the given text
     const encrypted = Buffer.concat([
-      cipher.update(`${text}`, 'utf8'),
+      cipher.update(`${plainText}`, 'utf8'),
       cipher.final()
     ])
+    
+    // extract the auth tag (16 bytes)
     const tag = cipher.getAuthTag()
 
-    // returns Base64 encoded value of [IV + Tag + encrypted]
-    return Buffer.concat([iv, tag, encrypted]).toString('base64')
+    // generate base64 encoded output (N-96 bytes)
+    return Buffer.concat([salt, iv, tag, encrypted]).toString('base64')
   }
 
   /**
    * @description A basic API for block cipher decryption using AES256-GCM.
-   * @param {string} encrypted [IV + Tag + encrypted]
+   * @param {string} cipherText Encrypted text
    */
-  decrypt = (encrypted: string): string => {
-    const buffers = Buffer.from(`${encrypted}`, 'base64')
+  decrypt = (cipherText: string): string => {
+    // base64 decoding
+    const bufferData = Buffer.from(`${cipherText}`, 'base64')
 
     // convert data to buffers
-    const iv = buffers.slice(0, 16)
-    const tag = buffers.slice(16, 32)
-    const text = buffers.slice(32, 40)
+    const salt = bufferData.slice(0, 64)
+    const iv = bufferData.slice(64, 80)
+    const tag = bufferData.slice(80, 96)
+    const encrypted = bufferData.slice(96)
 
-    // use AES256-GCM
     const algorithm = 'aes-256-gcm'
-    const decipher = crypto.createDecipheriv(algorithm, this._salt, iv)
+
+    // derive key
+    const key = this.getKey(salt)
+    const decipher = crypto.createDecipheriv(algorithm, key, iv)
+
     decipher.setAuthTag(tag)
 
-    // decrypt the given text
-    const decrypted =
-      decipher.update(text, 'binary', 'utf8') + decipher.final('utf8')
-
-    // returns UTF-8 encoded value
-    return decrypted
+    // generate utf8 encoded output
+    return decipher.update(encrypted) + decipher.final('utf8')
   }
 }
 
@@ -107,16 +122,16 @@ export class SHA {
 
   /**
    * @description A secure hash function using HMAC-SHA256
-   * @param {string} text Plaintext
+   * @param {string} plainText Plaintext
    */
-  encrypt = (text: string): string => {
+  encrypt = (plainText: string): string => {
     const encoding = 'base64'
     const algorithm = 'sha256'
 
-    // returns Base64 encoded value
+    // generate base64 encoded output
     return crypto
       .createHmac(algorithm, this._pepper)
-      .update(text)
+      .update(plainText)
       .digest(encoding)
   }
 }
@@ -125,16 +140,16 @@ export class SHAKE256 {
 
   /**
    * @description A secure hash function using SHAKE256 (SHA-3)
-   * @param {string} text Plaintext
+   * @param {string} plainText Plaintext
    */
-  encrypt = (text: string): string => {
+  encrypt = (plainText: string): string => {
     const encoding = 'base64'
     const algorithm = 'shake256'
 
-    // returns Base64 encoded value
+    // generate base64 encoded output
     return crypto
       .createHash(algorithm)
-      .update(text)
+      .update(plainText)
       .digest(encoding)
   }
 }
@@ -154,30 +169,30 @@ export class Argon2 {
 
   /**
    * @description A key derivation function using Argon2
-   * @param {string} text Plaintext
+   * @param {string} plainText Plaintext
    */
-  encrypt = (text: string): Promise<string> => {
+  encrypt = (plainText: string): Promise<string> => {
     if (!this._salt) {
       throw new Error("salt is not defined.")
     }
 
-    const value = text + this._salt
+    const value = plainText + this._salt
     const pre_hash = this.SHA.encrypt(value)
 
-    // outputs hashed value
+    // generate hashed output
     return argon2.hash(pre_hash)
   }
 
   /**
    * @description A verification function with input text and Argon2 hashed value
    * @param {string} hash Hash generated by argonEncrypt()
-   * @param {string} text Plaintext for verification
+   * @param {string} plainText Plaintext for verification
    */
-  match = (hash: string, text: string): Promise<boolean> => {
-    const value = text + this._salt
+  match = (hash: string, plainText: string): Promise<boolean> => {
+    const value = plainText + this._salt
     const pre_raw = this.SHA.encrypt(value)
 
-    // verify hashed value
+    // verify hashed value with input text
     return argon2.verify(hash, pre_raw)
   }
 }

@@ -23,16 +23,16 @@ npm install @empo/encryption
 
 ### Generate a random key
 
-This provides **CSPRNG**, to be used as a cryptographic function (e.g. AES, SHA, Argon2) backend. The length of the output value is determined by its type (IV or salt).
+This provides **CSPRNG**, to be used as a cryptographic function (e.g. AES, SHA, Argon2) backend. The length of the output value is determined by its type (IV or salt). You could also add an `encoding` option behind the `type`.
 
 ```ts
 import { generateRandomBytes } from '@empo/encryption'
 
+// Generate random iv (24-byte String)
 const buffer = generateRandomBytes({ type: 'iv' })
-// Generate a 24-byte String random IV (e.g. jK8OuOTY63qQ0WlAOvcBPA==)
 
+// Generate random base64 encoded salt (32-byte String)
 const salt = generateRandomBytes({ type: 'salt', encoding: 'base64' })
-// Generate a 32-byte String random salt (e.g. Zq0E3sDcmEJG8p3CAQ6qMsP5F5Dz3x38)
 ```
 
 ### Encryption
@@ -43,13 +43,15 @@ This provides a basic API for block cipher encryption using **AES256-GCM**.
 import { AES } from '@empo/encryption'
 
 const plaintext = 'password'
-// This is required for the encryption/decryption (e.g. Zq0E3sDcmEJG8p3CAQ6qMsP5F5Dz3x38)
-const pepper = generateRandomBytes({ type: 'salt', encoding: 'base64' })
 
-const aes = new AES(pepper)
+// Secret used for encryption/decryption and
+// it has to be cryptographic safe - this means randomBytes or derived by PBKDF2 (for example)
+const secret = generateRandomBytes({ type: 'salt', encoding: 'base64' })
 
+const aes = new AES(secret)
+
+// Generate base64 encoded cipher text
 const encrypted = aes.encrypt(plaintext)
-// Outputs Base64 encoded value (e.g. oy8MGB2ZgZttF2BRoRfn7sbPBnBzksB9)
 ```
 
 ### Decryption
@@ -60,14 +62,16 @@ This provides a basic API for block cipher decryption using **AES256-GCM**.
 import { AES } from '@empo/encryption'
 
 const plaintext = 'password'
-// This is required for the encryption/decryption (e.g. Zq0E3sDcmEJG8p3CAQ6qMsP5F5Dz3x38)
-const pepper = generateRandomBytes({ type: 'salt', encoding: 'base64' })
 
-const aes = new AES(pepper)
+// Secret used for encryption/decryption and
+// it has to be cryptographic safe - this means randomBytes or derived by PBKDF2 (for example)
+const secret = generateRandomBytes({ type: 'salt', encoding: 'base64' })
+
+const aes = new AES(secret)
 const encrypted = aes.encrypt(plaintext)
 
+// Generate utf8 encoded plain text
 const decrypted = aes.decrypt(encrypted)
-// Outputs UTF-8 encoded value (e.g. password)
 ```
 
 ### Secure hash function
@@ -78,13 +82,14 @@ This provides a secure hash function using **HMAC with SHA256**. A hash function
 import { SHA } from '@empo/encryption'
 
 const plaintext = 'password'
-// This is required for the cryptographic function (e.g. Zq0E3sDcmEJG8p3CAQ6qMsP5F5Dz3x38)
+
+// Pepper used for the cryptographic function
 const pepper = generateRandomBytes({ type: 'salt', encoding: 'base64' })
 
 const sha = new SHA(pepper)
 
+// Generate base64 encoded hash
 const encrypted = sha.encrypt(plaintext)
-// Outputs Base64 encoded value (e.g. IIU+YYIz6XDvNAObEOW+GymC0GiH8fW3SokPbP9P+xg=)
 ```
 
 This provides a generalization of a cryptographic hash function using **SHAKE256**. SHAKE256 is an *extensible-output function* (XOF) in the SHA-3 family, as specified in [FIPS 202](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf). The 256 in its name indicates its maximum security level (in bits), as described in Sections A.1 and A.2 of [FIPS 202](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf). Unlike HMAC with SHA256, SHAKE256 doesn't need a pepper.
@@ -96,8 +101,8 @@ const plaintext = 'password'
 
 const sha3 = new SHAKE256()
 
+// Generate base64 encoded hash
 const encrypted = sha3.encrypt(plaintext)
-// Outputs Base64 encoded value (e.g. pe4I+OOr59WS9t538dMpihFJ66aLl/CRyQt3NqG+Y6s=)
 ```
 
 This provides a key derivation function using **Argon2** algorithm. A key derivation function is a cryptographic hash function that derives one or more secret keys such as a password, or a passphrase using pseudorandom function — meaning that for a given input value it must always generate different hash value, and the function can't be reversible.
@@ -107,19 +112,17 @@ import { Argon2 } from '@empo/encryption'
 
 const plaintext = 'password'
 
-// Pepper is similar to salt but stored in the application environment variables, not in DB.
-// e.g. Zq0E3sDcmEJG8p3CAQ6qMsP5F5Dz3x38
+// Pepper is similar to salt but stored in the application environment variables, not in DB
 const pepper = generateRandomBytes({ type: 'salt', encoding: 'base64' })
 const salt = generateRandomBytes({ type: 'salt', encoding: 'base64' })
 
 const argon2 = new Argon2(pepper, salt)
 
+// Generate hash
 const encrypted = await argon2.encrypt(text)
-// Outputs hashed value
-// e.g. $argon2i$v=19$m=4096,t=3,p=1$dJGf0ZnY54zC0jGaqKzONA$5l8CBp0yEoEzYzsalRTe0AxplRhJvGAoJMpITHP4WbU
 
+// Verify hashed value with given text (outputs True or False)
 const match = await argon2.match(encrypted, text)
-// Verify hashed value (outputs True or False)
 ```
 
 ## FAQ
