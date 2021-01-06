@@ -9,3 +9,6 @@ coverage.data
 coverage/clover.xml
 coverage/coverage-final.json
 coverage/lcov-report/
+
+# VS Code
+.vscode
