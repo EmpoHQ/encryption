@@ -1,9 +1,9 @@
 {
   "name": "@empo/encryption",
-  "version": "0.2.7",
-  "description": "A JavaScript library for widely used crypto standards",
-  "homepage": "https://www.empoapp.com",
-  "author": "Empo Developers <dev@empoapp.com> (https://github.com/empo-dev)",
+  "version": "0.2.8",
+  "description": "A TypeScript library for widely used crypto standards",
+  "homepage": "https://empo.im",
+  "author": "Empo Dev <dev@empo.im> (https://github.com/EmpoHQ)",
   "contributors": [
     "Donghyun Kim <peterkimzz69@gmail.com> (https://github.com/peterkimzz)",
     "Handong Choi <wschd770@gmail.com> (https://github.com/henrychoi7)"
@@ -11,10 +11,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/empo-dev/encryption.git"
+    "url": "https://github.com/EmpoHQ/encryption.git"
   },
   "bugs": {
-    "url": "https://github.com/empo-dev/encryption/issues"
+    "url": "https://github.com/EmpoHQ/encryption/issues"
   },
   "keywords": [
     "empo",
@@ -34,6 +34,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && node_modules/.bin/tsc",
+    "prepublish": "npm run build",
     "test": "node_modules/.bin/jest",
     "deploy": "npm test && npm publish"
   },
