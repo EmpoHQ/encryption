@@ -15,7 +15,7 @@ beforeAll(() => {
 describe('SHA', () => {
   test('encrypt()', () => {
     encrypted = aes.encrypt(text)
-    expect(encrypted.length).toBe(56)
+    expect(encrypted.length).toBe(140)
   })
 
   test('decrypt()', () => {
