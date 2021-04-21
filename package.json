@@ -1,6 +1,6 @@
 {
   "name": "@empo/encryption",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "A TypeScript library for widely used crypto standards",
   "homepage": "https://empo.im",
   "author": "Empo Dev <dev@empo.im> (https://github.com/EmpoHQ)",
