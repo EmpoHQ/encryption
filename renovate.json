@@ -1,5 +1,6 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>empo-dev/renovate-config"
+    "github>EmpoHQ/renovate-config-public"
   ]
 }
